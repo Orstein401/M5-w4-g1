@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private bool run;
 
     [Header("newVelocity")]
+    private Vector3 dir;
     private Vector3 newVelocity;
 
     [Header("Ground")]
@@ -80,7 +81,7 @@ public class PlayerController : MonoBehaviour
 
     public void CalculateVelocity()
     {
-        Vector3 dir = new Vector3(h, 0, v);
+        dir = new Vector3(h, 0, v);
         dir.Normalize();
         newVelocity = dir * speed;
         newVelocity.y = rb.velocity.y;
@@ -88,7 +89,7 @@ public class PlayerController : MonoBehaviour
 
     public void IsRunning()
     {
-        if (run)
+        if (run&&dir!=Vector3.zero)
         {
             newVelocity *= 2;
             newVelocity.y = rb.velocity.y;
@@ -98,8 +99,7 @@ public class PlayerController : MonoBehaviour
     public void CheckGroundType()
     {
         if (Physics.SphereCast(checkerGround.position, radius, -transform.up, out var hit, maxDistance, grounds))
-        {
-            
+        { 
             if (hit.collider.gameObject.CompareTag("Dirt"))
             {
                 walkedGround = TypeGround.Dirt;
